@@ -1562,6 +1562,7 @@
           "statistics": "Statistics",
           "createLayer": "Create layer",
           "filterData": "Filter data",
+          "filterDataTooltip": "Current filters will be replaced",
           "export": "Export",
           "exportToCsv": "Export to CSV",
           "exportToJson": "Export to JSON",

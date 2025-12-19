@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import Message from '../../../../components/I18N/Message';
 import { describeFeatureType } from '../../../../api/WFS';
+import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { SelectRefContext } from '../LayersSelection';
 import Statistics from './Statistics/Statistics';
@@ -42,6 +43,7 @@ export default ({
     const [exportOpen, setExportOpen] = useState(false);
     const [statisticsOpen, setStatisticsOpen] = useState(false);
     const [numericFields, setNumericFields] = useState([]);
+
 
     const SelectRef = useContext(SelectRefContext);
     const ellipsisContainerClass = 'ellipsis-container';
@@ -124,16 +126,6 @@ export default ({
         case 'filterData': {
             const customOnChangeLayerProperties = fieldIdName => onChangeLayerProperties(node.id, {
                 layerFilter: {
-                    // searchUrl: null,
-                    // featureTypeConfigUrl: null,
-                    // showGeneratedFilter: false,
-                    // attributePanelExpanded: true,
-                    // spatialPanelExpanded: false,
-                    // crossLayerExpanded: false,
-                    // showDetailsPanel: false,
-                    // groupLevels: 5,
-                    // useMapProjection: false,
-                    // toolbarEnabled: true,
                     groupFields: [
                         {
                             id: 1,
@@ -141,7 +133,6 @@ export default ({
                             index: 0
                         }
                     ],
-                    // maxFeaturesWPS: 5,
                     filterFields: selectionData.features.map(feature => ({
                         rowId: new Date().getDate(),
                         groupId: 1,
@@ -155,12 +146,6 @@ export default ({
                         },
                         exception: null
                     }))
-                    // spatialField: null,
-                    // simpleFilterFields: [],
-                    // map: null,
-                    // filters: [],
-                    // crossLayerFilter: null,
-                    // autocompleteEnabled: true
                 }
             });
             switch (node.type) {
@@ -210,6 +195,11 @@ export default ({
         }
     }, []);
 
+    /**
+     *
+     */
+    const tooltip = <Tooltip id="info-filter"><Message msgId={"layersSelection.button.filterDataTooltip"} /></Tooltip>;
+
     return (
         <div className={ellipsisContainerClass}>
             <button className="ellipsis-button" onClick={toggleMenu}>
@@ -220,7 +210,20 @@ export default ({
                     <p onClick={() => triggerAction('zoomTo')}><Message msgId="layersSelection.button.zoomTo" /></p>
                     <p onClick={() => { toggleMenu(); selectionData.features?.length > 0 ? setStatisticsOpen(true) : null; }}><Message msgId="layersSelection.button.statistics" /></p>
                     <p onClick={() => triggerAction('createLayer')}><Message msgId="layersSelection.button.createLayer" /></p>
-                    {node.type !== 'arcgis' && <p onClick={() => triggerAction('filterData')}><Message msgId="layersSelection.button.filterData" /></p>}
+                    {node.type !== 'arcgis' &&
+                        <p onClick={() => triggerAction('filterData')}>
+                            <div className="filterDataItem">
+                                <Message msgId="layersSelection.button.filterData" />
+                                <OverlayTrigger
+                                    placement="top"
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={tooltip}>
+                                    <Glyphicon glyph="info-sign"/>
+                                </OverlayTrigger>
+
+                            </div>
+                        </p>
+                    }
                     <div>
                         <p onClick={toggleExport} className="export-toggle">
                             <Message msgId="layersSelection.button.export" />

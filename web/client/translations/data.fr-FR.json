@@ -1563,6 +1563,7 @@
           "statistics": "Statistiques",
           "createLayer": "Créer une couche",
           "filterData": "Filtrer les données",
+          "filterDataTooltip": "Les filters actifs seront remplacés",
           "export": "Exporter",
           "exportToCsv": "Exporter en CSV",
           "exportToJson": "Exporter en JSON",
