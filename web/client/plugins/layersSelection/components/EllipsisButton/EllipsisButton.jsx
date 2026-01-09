@@ -10,6 +10,7 @@ import { Glyphicon, Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 import { SelectRefContext } from '../LayersSelection';
 import Statistics from './Statistics/Statistics';
+import { getUniqueIdFieldName } from '../../utils/wfsUtils';
 
 /**
  * EllipsisButton provides a contextual menu for selected layer data.
@@ -43,7 +44,9 @@ export default ({
     const [exportOpen, setExportOpen] = useState(false);
     const [statisticsOpen, setStatisticsOpen] = useState(false);
     const [numericFields, setNumericFields] = useState([]);
+    const [hasUniqueId, setHasUniqueId] = useState(false);
 
+    let fieldNameOfUniqueId;
 
     const SelectRef = useContext(SelectRefContext);
     const ellipsisContainerClass = 'ellipsis-container';
@@ -156,9 +159,9 @@ export default ({
             }
             case 'wms':
             case 'wfs': {
-                describeFeatureType(node.url, node.name)
-                    .then(describe => customOnChangeLayerProperties(describe.featureTypes.find(featureType => node.name.endsWith(featureType.typeName)).properties.find(property => ['xsd:string', 'xsd:int'].find(type => type === property.type) && !property.nillable && property.maxOccurs === 1 && property.minOccurs === 1).name))
-                    .catch(err => { throw new Error(`Error while querying layer: ${err.message}`); });
+                if (fieldNameOfUniqueId) {
+                    customOnChangeLayerProperties(fieldNameOfUniqueId);
+                }
                 break;
             }
             default:
@@ -187,7 +190,21 @@ export default ({
         case 'wms':
         case 'wfs': {
             describeFeatureType(node.url, node.name)
-                .then(describe => setNumericFields(describe.featureTypes[0].properties.filter(property => property.localType === 'number').map(property => property.name)))
+                .then(describe => {
+                    setNumericFields(describe.featureTypes[0].properties.filter(property => property.localType === 'number').map(property => property.name));
+
+                    // check has uniqueId
+                    const aFeatureType = describe.featureTypes.find(featureType => node.name.endsWith(featureType.typeName));
+
+                    let idFieldName;
+                    if (aFeatureType) {
+                        idFieldName = getUniqueIdFieldName(aFeatureType);
+                        if (idFieldName) {
+                            // display filter only if layer has uniqId
+                            setHasUniqueId(true);
+                        }
+                    }
+                })
                 .catch(() => setNumericFields([]));
             break;
         }
@@ -210,7 +227,7 @@ export default ({
                     <p onClick={() => triggerAction('zoomTo')}><Message msgId="layersSelection.button.zoomTo" /></p>
                     <p onClick={() => { toggleMenu(); selectionData.features?.length > 0 ? setStatisticsOpen(true) : null; }}><Message msgId="layersSelection.button.statistics" /></p>
                     <p onClick={() => triggerAction('createLayer')}><Message msgId="layersSelection.button.createLayer" /></p>
-                    {node.type !== 'arcgis' &&
+                    {node.type !== 'arcgis' && hasUniqueId &&
                         <p onClick={() => triggerAction('filterData')}>
                             <div className="filterDataItem">
                                 <Message msgId="layersSelection.button.filterData" />
