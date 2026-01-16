@@ -599,6 +599,13 @@
       "title": "plugins.Isochrone.title",
       "description": "plugins.Isochrone.description",
       "dependencies": ["SidebarMenu"]
+    },
+    {
+      "name": "InfoMap",
+      "glyph": "align-left",
+      "title": "plugins.InfoMap.title",
+      "description": "plugins.InfoMap.description",
+      "dependencies": ["SidebarMenu"]
     }
   ]
 }

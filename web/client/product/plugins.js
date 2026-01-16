@@ -93,6 +93,7 @@ export const plugins = {
     HelpLinkPlugin: toModulePlugin('HelpLink', () => import(/* webpackChunkName: 'plugins/helpLink' */ '../plugins/HelpLink')),
     HelpPlugin: toModulePlugin('Help', () => import(/* webpackChunkName: 'plugins/helpPlugin' */ '../plugins/Help')),
     HomePlugin: toModulePlugin('Home', () => import(/* webpackChunkName: 'plugins/home' */ '../plugins/Home')),
+    InfoMapPlugin: toModulePlugin('InfoMap', () => import(/* webpackChunkName: 'plugins/InfoMap' */ '../plugins/InfoMap')),
     LanguagePlugin: toModulePlugin('Language', () => import(/* webpackChunkName: 'plugins/language' */ '../plugins/Language')),
     LayerDownload: toModulePlugin('LayerDownload', () => import(/* webpackChunkName: 'plugins/layerDownload' */ '../plugins/LayerDownload')),
     LayerInfoPlugin: toModulePlugin('LayerInfo', () => import(/* webpackChunkName: 'plugins/layerInfo' */ '../plugins/LayerInfo')),

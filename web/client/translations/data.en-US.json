@@ -3644,6 +3644,10 @@
       "Isochrone": {
         "description": "This plugin allows to calculate isochrones and isodistances",
         "title": "Isochrone"
+      },
+      "InfoMap": {
+        "description": "Display and configure information top of your map",
+        "title": "Info map"
       }
     },
     "contextCreator": {
@@ -4706,6 +4710,10 @@
         "confirm": "Confirm",
         "cancel": "Cancel"
       }
+    },
+    "infomap": {
+       "title":"TestbgrTitle",
+       "tooltip":"TestbgrTooltip"
     }
   }
 }
